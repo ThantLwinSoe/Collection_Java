@@ -1,0 +1,424 @@
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import java.awt.Image;
+
+import javax.swing.SwingConstants;
+import javax.swing.ComboBoxEditor;
+import javax.swing.ImageIcon;
+import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
+import javax.swing.JComboBox;
+import javax.swing.JTextArea;
+import javax.swing.border.LineBorder;
+import javax.swing.plaf.ComboBoxUI;
+import javax.swing.JPasswordField;
+import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+
+import com.toedter.calendar.JDateChooser;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Cursor;
+
+public class RegistractionForm3 extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField fn;
+	private JTextField ln;
+	private JTextField E;
+	private JTextField m;
+	private JTextField nrc;
+	private JPasswordField p;
+	private JPasswordField rp;
+	private JComboBox combo;
+	private JDateChooser bd;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					RegistractionForm3 frame = new RegistractionForm3();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public RegistractionForm3() {
+		setBackground(new Color(255, 255, 255));
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 400, 558);
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.PINK);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblRegistrationForm = new JLabel("Registration Form");
+		lblRegistrationForm.setBackground(new Color(255, 255, 255));
+		lblRegistrationForm.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblRegistrationForm.setForeground(new Color(245, 245, 220));
+		lblRegistrationForm.setFont(new Font("Tahoma", Font.BOLD, 21));
+		lblRegistrationForm.setBounds(50, 24, 270, 55);
+		contentPane.add(lblRegistrationForm);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon("D:\\Picture\\App-login-manager-icon (1).png"));
+		lblNewLabel.setBounds(67, 24, 46, 42);
+		contentPane.add(lblNewLabel);
+		
+		JLabel lblName = new JLabel("Name:");
+		lblName.setForeground(new Color(175, 238, 238));
+		lblName.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblName.setBounds(36, 85, 48, 20);
+		contentPane.add(lblName);
+		
+		fn = new JTextField();
+		fn.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		fn.setForeground(Color.BLACK);
+		fn.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		fn.setColumns(10);
+		fn.setBackground(Color.LIGHT_GRAY);
+		fn.setBounds(132, 81, 119, 29);
+		//fn.requestFocus();
+		contentPane.add(fn);
+		
+		JLabel lblName_1 = new JLabel("Birth Date:");
+		lblName_1.setForeground(new Color(175, 238, 238));
+		lblName_1.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblName_1.setBounds(36, 135, 74, 20);
+		contentPane.add(lblName_1);
+		
+		ln = new JTextField();
+		ln.setForeground(Color.BLACK);
+		ln.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		ln.setColumns(10);
+		ln.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		ln.setBackground(Color.LIGHT_GRAY);
+		ln.setBounds(261, 81, 119, 29);
+		contentPane.add(ln);
+		
+		JLabel lblNewLabel_1 = new JLabel("First Name");
+		lblNewLabel_1.setForeground(new Color(245, 245, 220));
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblNewLabel_1.setBounds(132, 110, 59, 14);
+		contentPane.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_1_1 = new JLabel("Last Name");
+		lblNewLabel_1_1.setForeground(new Color(245, 245, 220));
+		lblNewLabel_1_1.setBounds(261, 110, 71, 14);
+		contentPane.add(lblNewLabel_1_1);
+		
+		JLabel lblGender = new JLabel("NRC:");
+		lblGender.setForeground(new Color(175, 238, 238));
+		lblGender.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblGender.setBounds(36, 176, 51, 29);
+		contentPane.add(lblGender);
+		
+		JLabel lblAddress = new JLabel("Address:");
+		lblAddress.setForeground(new Color(175, 238, 238));
+		lblAddress.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblAddress.setBounds(36, 263, 62, 29);
+		contentPane.add(lblAddress);
+		
+	    final JTextArea addd = new JTextArea();
+		addd.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		addd.setBorder(new LineBorder(new Color(0, 0, 0)));
+		addd.setBackground(Color.LIGHT_GRAY);
+		addd.setForeground(Color.BLACK);
+		addd.setBounds(132, 249, 237, 72);
+		contentPane.add(addd);
+		
+		JLabel lblPassword = new JLabel("Password:");
+		lblPassword.setForeground(new Color(175, 238, 238));
+		lblPassword.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblPassword.setBounds(36, 335, 68, 20);
+		contentPane.add(lblPassword);
+		
+		JLabel lblEmail = new JLabel("Email:");
+		lblEmail.setForeground(new Color(175, 238, 238));
+		lblEmail.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblEmail.setBounds(36, 415, 48, 20);
+		contentPane.add(lblEmail);
+		
+		E = new JTextField();
+		E.setForeground(Color.BLACK);
+		E.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		E.setColumns(10);
+		E.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		E.setBackground(Color.LIGHT_GRAY);
+		E.setBounds(130, 411, 164, 29);
+		contentPane.add(E);
+		
+		JLabel lblMobile = new JLabel("Mobile:");
+		lblMobile.setForeground(new Color(175, 238, 238));
+		lblMobile.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblMobile.setBounds(36, 459, 48, 20);
+		contentPane.add(lblMobile);
+		
+		m = new JTextField();
+		m.setForeground(Color.BLACK);
+		m.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		m.setColumns(10);
+		m.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		m.setBackground(Color.LIGHT_GRAY);
+		m.setBounds(132, 455, 164, 29);
+		contentPane.add(m);
+		
+		JButton cancel = new JButton("Cancel");
+		cancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				fn.setText(null);
+				ln.setText(null);
+				bd.setDate(null);
+				nrc.setText(null);
+				combo.setSelectedItem(null);
+				addd.setText(null);
+				p.setText(null);
+				rp.setText(null);
+				E.setText(null);
+				m.setText(null);
+				fn.requestFocus();
+				
+				
+			}
+		});
+		cancel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		cancel.setForeground(Color.WHITE);
+		cancel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		cancel.setBackground(new Color(255, 69, 0));
+		cancel.setBounds(132, 495, 89, 29);
+		contentPane.add(cancel);
+		
+		JButton create = new JButton("Create");
+		create.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		create.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
+				
+				String firstName=fn.getText();
+				String lastName=ln.getText();
+				String birthDate=sdf.format(bd.getDate());
+				String NRC=nrc.getText();
+				String gender= combo.getSelectedItem().toString();
+				String address=addd.getText();
+				String password=p.getText();
+				String repassword=rp.getText();
+				String email=E.getText();
+				String mobile= m.getText();
+				String username= firstName+" "+lastName;
+				
+				int num=mobile.length();
+				/*
+				if(firstName.equals("")) {
+					JOptionPane.showMessageDialog(null, "Check your FirstName","Error Message",JOptionPane.ERROR_MESSAGE);
+					
+				}
+				if(lastName.equals("")) {
+					JOptionPane.showMessageDialog(null, "Check your LastName","Error Message",JOptionPane.ERROR_MESSAGE);
+				}
+				if(NRC.equals("")) {
+					JOptionPane.showMessageDialog(null, "Check your NRC","Error Message",JOptionPane.ERROR_MESSAGE);
+				}
+				if(address.equals("")) {
+					JOptionPane.showMessageDialog(null, "Check your address","Error Message",JOptionPane.ERROR_MESSAGE);
+				}
+				if(password.equals("")) {
+					JOptionPane.showMessageDialog(null, "Check your password","Error Message",JOptionPane.ERROR_MESSAGE);
+				}
+				if(repassword.equals("")) {
+					JOptionPane.showMessageDialog(null, "Check your repassword","Error Message",JOptionPane.ERROR_MESSAGE);
+				}
+				if(email.equals("")) {
+					JOptionPane.showMessageDialog(null, "Check your email","Error Message",JOptionPane.ERROR_MESSAGE);
+				}
+				if(mobile.equals("")) {
+					JOptionPane.showMessageDialog(null, "Check your mobile","Error Message",JOptionPane.ERROR_MESSAGE);
+				}
+				*/
+				if(password.equals(repassword)) {
+								
+				
+				if(num<9) {
+					JOptionPane.showMessageDialog(addd, "Valid Number", "Error Message", JOptionPane.ERROR_MESSAGE);
+				}else {
+					
+					String url="jdbc:mysql://Localhost:3306/bookshopproject";
+					String user="root";
+					String pw= "formy250616823@TLS";
+					
+					try {
+						Class forname=Class.forName("com.mysql.cj.jdbc.Driver");
+					} catch (ClassNotFoundException e1) {
+						System.out.println(e1);
+						e1.printStackTrace();
+					}
+					try {
+						Connection con = DriverManager.getConnection(url,user,pw);
+						
+						
+					//	System.out.println("Connection Success");
+						//System.out.println(firstName+" "+lastName);
+						//System.out.println(username);
+						//System.out.println(birthDate);
+						/*System.out.println(password);
+						System.out.println(repassword);
+						System.out.println(firstName);
+						*/
+						PreparedStatement ps=con.prepareStatement
+								("insert into registration(firstname,lastname,birthdate,ncr,gender,"
+										+ "address,password,repassword,"
+										+ "email,mobile,"
+										+ "username)"
+										+ "Value(?,?,?,?,?,?,?,?,?,?,?)");
+						
+						ps.setString(1, firstName);
+						ps.setString(2, lastName);
+						ps.setString(3, birthDate);
+						ps.setString(4, NRC);
+						ps.setString(5, gender);
+						ps.setString(6, address);
+						ps.setString(7, password);
+						ps.setString(8, repassword);
+						ps.setString(9, email);
+						ps.setString(10, mobile);
+						ps.setString(11, username);
+						
+						ps.executeUpdate();
+						con.close();
+						JOptionPane.showMessageDialog(addd,"Registration Success!!!!","COMPLETE CREATED ACCOUNT",JOptionPane.INFORMATION_MESSAGE);
+						
+						LoginForm2 lg= new LoginForm2();
+						lg.show();
+						dispose();
+						
+					} catch (SQLException e2) {
+						System.out.println(e2);
+						e2.printStackTrace();
+					}
+				
+					}
+								
+			
+				}else {
+					JOptionPane.showMessageDialog(addd,"Check your Password","Error Message",JOptionPane.ERROR_MESSAGE);
+				}
+				}
+				
+		});
+		create.setForeground(Color.WHITE);
+		create.setFont(new Font("Tahoma", Font.BOLD, 14));
+		create.setBackground(new Color(65, 105, 225));
+		create.setBounds(244, 495, 88, 29);
+		contentPane.add(create);
+		
+		JLabel lblX = new JLabel("X");
+		lblX.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				dispose();
+			}
+		});
+		lblX.setHorizontalAlignment(SwingConstants.CENTER);
+		lblX.setForeground(Color.WHITE);
+		lblX.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblX.setBounds(350, 0, 46, 33);
+		contentPane.add(lblX);
+		
+		JLabel lblX_1 = new JLabel("-");
+		lblX_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblX_1.setForeground(new Color(245, 245, 245));
+		lblX_1.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblX_1.setBounds(312, 0, 48, 33);
+		contentPane.add(lblX_1);
+		
+		JLabel click = new JLabel("Click here to login");
+		click.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		click.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				LoginForm2 rgf= new LoginForm2();
+				rgf.setVisible(true);
+				dispose();
+			}
+		});
+		click.setHorizontalAlignment(SwingConstants.CENTER);
+		click.setForeground(new Color(245, 245, 220));
+		click.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		click.setBounds(132, 530, 203, 24);
+		contentPane.add(click);
+		
+		nrc = new JTextField();
+		nrc.setForeground(Color.BLACK);
+		nrc.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		nrc.setColumns(10);
+		nrc.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		nrc.setBackground(Color.LIGHT_GRAY);
+		nrc.setBounds(132, 176, 164, 29);
+		contentPane.add(nrc);
+		
+		JLabel lblRepassword = new JLabel("  Repassword:");
+		lblRepassword.setForeground(new Color(175, 238, 238));
+		lblRepassword.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblRepassword.setBounds(25, 375, 93, 20);
+		contentPane.add(lblRepassword);
+		
+		JLabel lblGender_1 = new JLabel("Gender:");
+		lblGender_1.setForeground(new Color(175, 238, 238));
+		lblGender_1.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblGender_1.setBounds(36, 216, 68, 20);
+		contentPane.add(lblGender_1);
+		
+		 combo = new JComboBox();
+		combo.setBounds(132, 216, 164, 22);
+		contentPane.add(combo);
+		combo.addItem("Male");
+		combo.addItem("Female");
+		
+		
+		bd = new JDateChooser();
+		bd.setBounds(132, 135, 119, 20);
+		contentPane.add(bd);
+		
+		ImageIcon icon=new ImageIcon("rg.jpg");
+		Image book=icon.getImage().getScaledInstance(400, 559, Image.SCALE_SMOOTH);
+		JLabel image = new JLabel("");
+		image.setIcon(new ImageIcon(book));
+		image.setBounds(0, 0, 400, 559);
+		contentPane.add(image);
+		
+		p = new JPasswordField();
+		p.setBackground(Color.LIGHT_GRAY);
+		p.setBounds(132, 332, 164, 29);
+		image.add(p);
+		//contentPane.add(p);
+		
+		rp = new JPasswordField();
+		rp.setBackground(Color.LIGHT_GRAY);
+		rp.setBounds(130, 371, 164, 29);
+		image.add(rp);
+		//contentPane.add(rp);
+		
+		setUndecorated(true);
+	}
+}

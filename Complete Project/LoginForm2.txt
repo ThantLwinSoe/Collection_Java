@@ -1,0 +1,241 @@
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Color;
+import javax.swing.SwingConstants;
+import javax.swing.JTextField;
+import javax.swing.JPasswordField;
+import javax.swing.JButton;
+import javax.swing.border.BevelBorder;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.swing.ImageIcon;
+import java.awt.Cursor;
+import javax.swing.border.LineBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class LoginForm2 extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField us1;
+	private JPasswordField ps1;
+	private JLabel lblX;
+	private JLabel lblX_1;
+	private JLabel lblNewLabel_1;
+	private JLabel pUser;
+	private JLabel lblNewLabel_3;
+	private JLabel picture;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					LoginForm2 frame = new LoginForm2();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public LoginForm2() {
+		
+		ImageIcon app= new ImageIcon("book1.png");
+		
+		setIconImage(app.getImage());
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 376, 309);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel mLogin = new JLabel("Member Login");
+		mLogin.setIcon(new ImageIcon("ml.png"));
+		mLogin.setHorizontalAlignment(SwingConstants.RIGHT);
+		mLogin.setForeground(new Color(128, 0, 0));
+		mLogin.setFont(new Font("Tahoma", Font.BOLD, 21));
+		mLogin.setBounds(78, 23, 217, 55);
+		contentPane.add(mLogin);
+		
+		us1 = new JTextField();
+		us1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		us1.setForeground(Color.WHITE);
+		us1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		us1.setColumns(10);
+		us1.setBackground(Color.GRAY);
+		us1.setBounds(112, 103, 203, 29);
+		contentPane.add(us1);
+		
+		ps1 = new JPasswordField();
+		ps1.setBackground(Color.LIGHT_GRAY);
+		ps1.setBounds(112, 161, 203, 29);
+		contentPane.add(ps1);
+		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				us1.setText("");
+				ps1.setText("");
+				us1.requestFocus();
+				
+			}
+		});
+		btnCancel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		btnCancel.setIcon(new ImageIcon("bc.png"));
+		btnCancel.setForeground(Color.WHITE);
+		btnCancel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnCancel.setBackground(new Color(255, 69, 0));
+		btnCancel.setBounds(104, 215, 97, 29);
+		contentPane.add(btnCancel);
+		
+		JButton btnNewButton = new JButton("Login");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String us=us1.getText();
+				String pword=ps1.getText();
+				
+				try {
+					Class forname=Class.forName("com.mysql.cj.jdbc.Driver");
+				} catch (ClassNotFoundException e1) {
+					System.out.println(e1);
+					e1.printStackTrace();
+				}
+				
+				String url="jdbc:mysql://localhost:3306/bookshopproject";
+				String user="root";
+				String ps="formy250616823@TLS";
+				
+				
+				try {
+					Connection con=DriverManager.getConnection(url,user,ps);
+					
+					//System.out.println("Connection Success!!!");
+					
+					PreparedStatement pst= con.prepareStatement
+							("Select * from registration where username='"+us+"' and password='"+pword+"'");
+					
+					//pst.setString(1, us);
+					
+					//pst.setString(1, pword);
+					
+					//System.out.println(pword);
+					//ResultSet rs=pst.executeQuery();
+					//us.equals(rs.getString("username")) &&
+					// us.equals(rs.getString("username")) && pword.equals(rs.getString("password"))
+					//Statement st= con.createStatement();
+					
+					ResultSet rs=pst.executeQuery();
+					if(rs.next()) {
+						
+						JOptionPane.showMessageDialog(us1, "Successful Login","LogIn",JOptionPane.INFORMATION_MESSAGE);
+						bookstore go= new bookstore();
+						go.show();
+						dispose();
+					}else {
+						JOptionPane.showMessageDialog(us1, "InCorrect User Name and Password!!!","LogIn",JOptionPane.ERROR_MESSAGE);
+					}
+					
+				} catch (SQLException e2) {
+					System.out.println(e2);
+					e2.printStackTrace();
+				}
+				
+				
+				
+				
+			}
+		});
+		btnNewButton.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		btnNewButton.setIcon(new ImageIcon("bln.png"));
+		btnNewButton.setForeground(Color.WHITE);
+		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 14));
+		btnNewButton.setBackground(new Color(65, 105, 225));
+		btnNewButton.setBounds(223, 215, 103, 29);
+		contentPane.add(btnNewButton);
+		
+		lblX = new JLabel("X");
+		lblX.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				dispose();
+			}
+		});
+		lblX.setHorizontalAlignment(SwingConstants.CENTER);
+		lblX.setForeground(Color.BLACK);
+		lblX.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblX.setBounds(340, 0, 36, 33);
+		contentPane.add(lblX);
+		
+		lblX_1 = new JLabel("-");
+		lblX_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblX_1.setForeground(Color.BLACK);
+		lblX_1.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblX_1.setBounds(305, -2, 48, 33);
+		contentPane.add(lblX_1);
+		
+		lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setIcon(new ImageIcon("D:\\Picture\\office-address-book-icon.png"));
+		lblNewLabel_1.setBounds(92, 30, 46, 48);
+		contentPane.add(lblNewLabel_1);
+		
+		ImageIcon iccc= new ImageIcon("user1.png");
+		Image fo= iccc.getImage().getScaledInstance(36, 29, Image.SCALE_SMOOTH);
+		pUser = new JLabel("");
+		pUser.setIcon(new ImageIcon(fo));
+		pUser.setBounds(50, 103, 36, 29);
+		contentPane.add(pUser);
+		ImageIcon icon1= new ImageIcon("D:\\Picture\\pexels-burst-545030.jpg");
+		Image mdIcon=icon1.getImage().getScaledInstance(376, 309, Image.SCALE_SMOOTH);
+		
+		JLabel click = new JLabel("Click here to create a new account");
+		click.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		click.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				RegistractionForm3 rgf=new RegistractionForm3();
+				rgf.setVisible(true);
+				dispose();
+			}
+		});
+		click.setHorizontalAlignment(SwingConstants.CENTER);
+		click.setForeground(Color.BLACK);
+		click.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		click.setBounds(112, 261, 203, 24);
+		contentPane.add(click);
+		
+		
+		lblNewLabel_3 = new JLabel("");
+		lblNewLabel_3.setIcon(new ImageIcon("l.png"));
+		lblNewLabel_3.setBounds(50, 157, 46, 33);
+		contentPane.add(lblNewLabel_3);
+		ImageIcon icon=new ImageIcon("lg.jpg");
+		Image book=icon.getImage().getScaledInstance(376, 309, Image.SCALE_SMOOTH);
+		picture = new JLabel("");
+		picture.setIcon(new ImageIcon(book));
+		picture.setBounds(0, 0, 376, 309);
+		contentPane.add(picture);
+		setUndecorated(true);
+	}
+}

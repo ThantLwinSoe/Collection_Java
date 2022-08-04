@@ -1,0 +1,424 @@
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Color;
+
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
+
+import com.mysql.cj.xdevapi.Result;
+
+import javax.swing.JTextField;
+import javax.swing.JButton;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import java.awt.Cursor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.border.EtchedBorder;
+
+
+public class bookstore extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField inputBookName;
+	private JTextField InputAuthor;
+	private JTextField inputPrice;
+	private JTextField searchBookid;
+	private JTextField showBookid;
+	private JTextField showPrice;
+	private JTextField quantity;
+	private JTextField total;
+	private JTextField inputId;
+	private Class forname;
+//	private Class forname1;
+	private Connection con;
+//	private Connection con1;
+	private PreparedStatement ps;
+//	private PreparedStatement ps1;
+	 
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					bookstore frame = new bookstore();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 * 
+	 */
+	public bookstore() {
+		
+		ImageIcon appIcon= new ImageIcon("user1.png");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setIconImage(appIcon.getImage());
+		setTitle("The Book Shop");
+		setBounds(100, 100, 518, 476);
+		contentPane = new JPanel();
+		contentPane.setBackground(Color.LIGHT_GRAY);
+		contentPane.setForeground(Color.WHITE);
+		contentPane.setBorder(new LineBorder(new Color(0, 0, 0)));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.LIGHT_GRAY);
+		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Registration", TitledBorder.LEADING, TitledBorder.TOP, null, Color.BLACK));
+		panel.setBounds(10, 219, 212, 209);
+		contentPane.add(panel);
+		panel.setLayout(null);
+		
+		JLabel lblBookName = new JLabel("Book Name");
+		lblBookName.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblBookName.setBounds(10, 70, 79, 27);
+		panel.add(lblBookName);
+		
+		JLabel lblEdition = new JLabel("Author");
+		lblEdition.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblEdition.setBounds(10, 119, 79, 15);
+		panel.add(lblEdition);
+		
+		JLabel lblPrice = new JLabel("Price");
+		lblPrice.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblPrice.setBounds(10, 145, 46, 14);
+		panel.add(lblPrice);
+		
+		inputBookName = new JTextField();
+		inputBookName.setBounds(103, 74, 99, 20);
+		panel.add(inputBookName);
+		inputBookName.setColumns(10);
+		
+		InputAuthor = new JTextField();
+		InputAuthor.setBounds(103, 114, 99, 20);
+		panel.add(InputAuthor);
+		InputAuthor.setColumns(10);
+		
+		inputPrice = new JTextField();
+		inputPrice.setBounds(103, 143, 99, 20);
+		panel.add(inputPrice);
+		inputPrice.setColumns(10);
+		
+		ImageIcon savePhoto= new ImageIcon("save1.png");
+		Image sp=savePhoto.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+		
+		final JButton save = new JButton("Save");
+		save.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		save.setIcon(new ImageIcon(sp));
+		save.setBounds(103, 167, 102, 31);
+		panel.add(save);
+		save.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
+		JLabel lblBookId_2 = new JLabel("Book ID");
+		lblBookId_2.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblBookId_2.setBounds(10, 39, 52, 20);
+		panel.add(lblBookId_2);
+		
+		inputId = new JTextField();
+		inputId.setColumns(10);
+		inputId.setBounds(103, 40, 99, 20);
+		panel.add(inputId);
+		 
+		 
+		save.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				 String bookid=inputId.getText();
+				  String bookname=inputBookName.getText();
+				 
+				  String author=InputAuthor.getText();
+				  int price=Integer.parseInt(inputPrice.getText());
+				
+				
+			
+			try{
+				
+				forname= Class.forName("com.mysql.cj.jdbc.Driver");
+				
+				
+				 con=DriverManager.getConnection
+						("jdbc:mysql://localhost:3306/bookshopproject","root","formy250616823@TLS");
+				
+				//String query=
+				//		"INSERT INTO booklist data values('"+bookid+"','"+bookname+"','"+author+"','"+price+"')";
+				
+				//Statement sta=connection.createStatement();
+				
+				 ps=con.prepareStatement
+						("insert into booksale(bookId,bookname,author,price) values(?,?,?,?)");
+				
+				ps.setString(1, bookid);
+				ps.setString(2, bookname);
+				ps.setString(3, author);
+				ps.setInt(4, price);
+				
+				
+				
+				ps.executeUpdate();
+				JOptionPane.showMessageDialog(searchBookid, "Book Informations have Saved!!!", "Book Registration Form", JOptionPane.INFORMATION_MESSAGE);
+				/*if(x==0){
+					JOptionPane.showMessageDialog(save, "This is already exist");
+				}else{
+					JOptionPane.showMessageDialog(save, "Your book is successfully added in your bookshop 's list");
+					
+				}*/
+				//con.close();
+				
+			}catch(Exception exception){
+				exception.printStackTrace();
+				
+			}
+			
+			inputId.setText(" ");	
+			 inputBookName.setText(" ");
+			 InputAuthor.setText(" ");
+			 inputPrice.setText(" "); 
+			 
+			
+
+			}
+		});
+		
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(Color.LIGHT_GRAY);
+		panel_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Search", TitledBorder.LEADING, TitledBorder.TOP, null, Color.BLACK));
+		panel_1.setBounds(10, 106, 212, 113);
+		contentPane.add(panel_1);
+		panel_1.setLayout(null);
+		
+		searchBookid = new JTextField();
+		searchBookid.setBounds(104, 27, 98, 20);
+		panel_1.add(searchBookid);
+		searchBookid.setColumns(10);
+		
+		ImageIcon ic1=new ImageIcon("s.png");
+		Image icc1= ic1.getImage().getScaledInstance(17, 20, Image.SCALE_SMOOTH);
+		
+		JButton search = new JButton("Search");
+		search.setIcon(new ImageIcon(icc1));
+		search.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		search.setBounds(104, 71, 98, 31);
+		panel_1.add(search);
+		search.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int sid=Integer.parseInt(searchBookid.getText());
+				//String ssid=String.valueOf(sid);
+				
+				String url1="jdbc:mysql://Localhost:3306/bookshopproject";
+				String u="root";
+				String p="formy250616823@TLS";
+				
+				try {
+					
+				forname= Class.forName("com.mysql.cj.jdbc.Driver");
+					
+					con=DriverManager.getConnection(url1,u,p);
+					
+					//System.out.print("Connection Success!!!");
+					
+					ps=con.prepareStatement("select bookID,price from booksale where bookID=?");
+							//Statement pp=con.createStatement();
+							//("select bookID,price from booksale where bookID=?");
+					//"Select * from booksale where bookID='"+sid+"'"
+					//String ss="Select * from booksale where bookID='"+sid+"'";
+					ps.setInt(1,sid);
+				//	ps1.setString(1,ssid);
+					
+					ResultSet ret=ps.executeQuery();
+					
+					//re.findColumn(columnLabel)
+					if(ret.next())
+					{
+						showBookid.setText(String.valueOf(ret.getInt("bookID")));
+						showPrice.setText(String.valueOf(ret.getInt("price")));
+					}else {
+						JOptionPane.showMessageDialog(null,"Data Not Found!!!!","Error Message",JOptionPane.ERROR_MESSAGE);
+					}					
+					con.close();
+					
+				} catch (ClassNotFoundException e) {
+					
+					e.printStackTrace();
+				} catch (SQLException e) {
+					
+					e.printStackTrace();
+				}
+				
+				
+			}
+		});
+		search.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
+		JLabel lblBookId = new JLabel("Book ID");
+		lblBookId.setBounds(10, 26, 52, 20);
+		panel_1.add(lblBookId);
+		lblBookId.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
+		ImageIcon ic=new ImageIcon("image3.png");
+		Image icc= ic.getImage().getScaledInstance(310, 88, Image.SCALE_SMOOTH);
+		
+		JLabel forIcon = new JLabel("");
+		/*forIcon.setForeground(new Color(0, 51, 255));
+		forIcon.setFont(new Font("Times New Roman", Font.BOLD, 20));
+		forIcon.setHorizontalTextPosition(SwingConstants.CENTER);
+		forIcon.setVerticalTextPosition(SwingConstants.CENTER);*/
+		forIcon.setIcon(new ImageIcon(icc));
+		forIcon.setBounds(118, 11, 310, 88);
+		contentPane.add(forIcon);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(Color.LIGHT_GRAY);
+		panel_2.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Selling", TitledBorder.LEADING, TitledBorder.TOP, null, Color.BLACK));
+		panel_2.setBounds(274, 106, 204, 174);
+		contentPane.add(panel_2);
+		panel_2.setLayout(null);
+		
+		JLabel lblBookId_1 = new JLabel("Book ID");
+		lblBookId_1.setFont(new Font("Times New Roman", Font.BOLD, 14));
+		lblBookId_1.setBounds(10, 23, 84, 36);
+		panel_2.add(lblBookId_1);
+		
+		showBookid = new JTextField();
+		showBookid.setBounds(98, 32, 86, 20);
+		panel_2.add(showBookid);
+		showBookid.setColumns(10);
+		
+		JLabel lblPrice_1 = new JLabel("Price");
+		lblPrice_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblPrice_1.setBounds(10, 70, 46, 14);
+		panel_2.add(lblPrice_1);
+		
+		showPrice = new JTextField();
+		showPrice.setBounds(98, 70, 86, 20);
+		panel_2.add(showPrice);
+		showPrice.setColumns(10);
+		
+		JLabel lblDisco = new JLabel("Quantity");
+		lblDisco.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblDisco.setBounds(10, 95, 71, 30);
+		panel_2.add(lblDisco);
+		
+		quantity = new JTextField();
+		quantity.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+				
+				/*switch(quantity.getText()) {
+				
+				case "":
+					JOptionPane.showMessageDialog(quantity, "Please Input Quantity Or Click Clear!!!", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+				break;
+				case r:
+					JOptionPane.showMessageDialog(quantity, "Please Input Quantity Or Click Clear!!!", "Information Message", JOptionPane.INFORMATION_MESSAGE);
+				break;
+				default:
+					//JOptionPane
+				
+				}*/
+				
+				char r=e.getKeyChar();
+				//System.out.println(r);
+				if(Character.isLetter(r)) {
+					JOptionPane.showMessageDialog(quantity, "Please Input Quantity Or Click Clear!!!", "Information Message", JOptionPane.ERROR_MESSAGE);
+				}else if(quantity.getText().equals("")){
+					JOptionPane.showMessageDialog(quantity, "Please Input Quantity Or Click Clear!!!", "Information Message", JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+				int p= Integer.parseInt(showPrice.getText());
+				int q=Integer.parseInt(quantity.getText());
+				int t=p*q;
+				total.setText(String.valueOf(t));
+				}	
+					
+							
+				
+				
+				
+						
+				
+			}
+		});
+		quantity.setBounds(98, 101, 86, 20);
+		panel_2.add(quantity);
+		quantity.setColumns(10);
+		
+		JLabel lblTotal = new JLabel("Total");
+		lblTotal.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblTotal.setBounds(10, 136, 84, 14);
+		panel_2.add(lblTotal);
+		
+		total = new JTextField();
+		total.setBounds(98, 134, 86, 20);
+		panel_2.add(total);
+		total.setColumns(10);
+		
+		JLabel lblClickHereTo = new JLabel("Click Here to previous Page!!!");
+		lblClickHereTo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				LoginForm2 back= new LoginForm2();
+				back.show();
+				dispose();
+			}
+		});
+		lblClickHereTo.setIcon(new ImageIcon("backic.png"));
+		lblClickHereTo.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblClickHereTo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblClickHereTo.setBounds(232, 339, 246, 30);
+		contentPane.add(lblClickHereTo);
+		
+		JLabel lblNewLabel = new JLabel("Clear Selling Data");
+		lblNewLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				showBookid.setText("");
+				showPrice.setText("");
+				quantity.setText("");
+				total.setText("");
+				searchBookid.setText("");
+				
+				
+			}
+		});
+		lblNewLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel.setBounds(357, 279, 121, 22);
+		contentPane.add(lblNewLabel);
+	}
+}
