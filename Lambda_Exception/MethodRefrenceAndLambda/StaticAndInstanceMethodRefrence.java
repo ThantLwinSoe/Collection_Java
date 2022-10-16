@@ -12,6 +12,9 @@ Hello hello = name -> System.out.println(name);
 // This will print "Thant"
 hello.sayHello("Thant");
 
+
+
+
 // Use Instance
 // To Creat instance method same signature of SAM
 class OkInstance {
@@ -25,6 +28,9 @@ Hello hello = oklay :: mite // Method Owner :: Method Name
 
 // This will print "Soe"
 hello.sayHello("Soe");
+
+
+
 
 
 // Use Static
