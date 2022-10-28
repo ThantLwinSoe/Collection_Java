@@ -1,0 +1,4 @@
+Cake	500
+Nest Cafe	700
+Potato Chips	500
+CHocolet	800
