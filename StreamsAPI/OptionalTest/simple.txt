@@ -1,0 +1,3 @@
+Text Book	2500
+Java Fundamentals	7000
+English Book	14000
