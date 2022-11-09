@@ -1,0 +1,21 @@
+အမေးပို့စ်ပါ ခင်ဗျာ 
+
+ဆရာ ကျနော် String တခု ယူပြီး String အထဲက data တွေကို ပြန်ပြောင်း ချင်လို့
+Stream API ရဲ့ collect method ကိုသုံး ကြည့်တာ third parameter combiner 
+ရဲ့ အလုပ်လုပ်တာ သိပ်နားမလည်ဘူး ဖြစ်နေပါတယ်။
+
+collect(Supplier<R> supplier, 
+        BiConsumer<R,? super T> accumulator,
+        BiConsumer<R,R> combiner);
+
+ဒီလိုပါ ဆရာ
+
+jshell> String str = "Hello MoeMoe"
+str ==> "Hello MoeMoe"
+
+
+jshell> var t = str.lines().collect( () -> new StringBuilder(), // create type
+   ...> (builder , ele) -> builder.append(ele), // operate 1
+   ...> (result , builder) -> builder.reverse()); // operate 2 did not work
+t ==> Hello MoeMoe
+
