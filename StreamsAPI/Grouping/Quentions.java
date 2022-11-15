@@ -72,3 +72,7 @@ jshell> var t = list.stream().ngByConcurrent(
 t ==> {Ko Thant={Online=[Registration {Ko Thant, 202107 ... e, Java Basic, 300000 }]}}
 
 // with Type
+jshell> Map<String,Map<String,List<Registration>>> tt = list.stream().
+   ...> collect(Collectors.groupingBy(a->a.getName() , Collectors.groupingBy( a-> a.getType().toString())))
+tt ==> {Ko Thant={Online=[Registration {Ko Thant, 202107 ... e, Java Basic, 300000 }]}}
+
