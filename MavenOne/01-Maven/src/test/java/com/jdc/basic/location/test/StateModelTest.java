@@ -2,6 +2,7 @@ package com.jdc.basic.location.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import com.jdc.basic.location.model.StateModel;
 import com.jdc.basic.location.model.dto.State;
@@ -40,11 +42,16 @@ public class StateModelTest {
 	
 	@Test
 	@Order(1)
-	void test_create_error() {
+	@CsvSource(value = {
+			",region,capital,Please enter name of state.",
+			"name,,capital,Please enter region of state.",
+			"name,region,,Please enter capital of state.",
+	})
+	void test_create_error(String name, String region, String capital) {
 		// Prepare Inputs (Parameters)
-		
+		var form = new StateForm(name,region,capital);
 		// Execute target method
-		
+	//(IllegalAccessException.class, () -> model.create(null))
 		// Check Result
 		
 	}
